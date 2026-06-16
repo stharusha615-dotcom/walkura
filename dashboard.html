@@ -19,20 +19,23 @@
     </div>
 
     <ul>
-        <li><a href="#"><i class="fa fa-home"></i> Dashboard</a></li>
-        <li><a href="#"><i class="fa fa-shoe-prints"></i> Products</a></li>
-        <li><a href="#"><i class="fa fa-cart-shopping"></i> Orders</a></li>
-        <li><a href="#"><i class="fa fa-users"></i> Customers</a></li>
-        <li><a href="#"><i class="fa fa-chart-line"></i> Reports</a></li>
-        <li><a href="#"><i class="fa fa-right-from-bracket"></i> Logout</a></li>
+        <li><a href="#dashboard"><i class="fa fa-home"></i> Dashboard</a></li>
+        <li><a href="#product-section"><i class="fa fa-shoe-prints"></i> Products</a></li>
+        <li><a href="#orders-section"><i class="fa fa-cart-shopping"></i> Orders</a></li>
+        <li><a href="#customers-section"><i class="fa fa-users"></i> Customers</a></li>
+        <li><a id="logout-link" href="walkura.html"><i class="fa fa-right-from-bracket"></i> Logout</a></li>
     </ul>
 
 </div>
 
 <div class="main">
 
-    <div class="header">
-        <h1>Dashboard</h1>
+    <div class="header" id="dashboard">
+        <div>
+            <h1>Dashboard</h1>
+            <p>Manage products, view orders, and review customer insights.</p>
+        </div>
+        <button class="logout-btn" id="logout-btn">Logout</button>
     </div>
 
     <div class="cards">
@@ -59,38 +62,194 @@
 
     </div>
 
-    <div class="table-box">
+    <section class="section" id="product-section">
+        <div class="section-header">
+            <h2>Product Management</h2>
+            <p>Add new products and delete items from your current inventory.</p>
+        </div>
 
-        <h2>Recent Orders</h2>
+        <div class="product-panel">
+            <form class="product-form" id="product-form">
+                <h3>Add New Product</h3>
+                <label for="product-name">Name</label>
+                <input type="text" id="product-name" placeholder="Product name" required>
 
-        <table>
+                <label for="product-category">Category</label>
+                <input type="text" id="product-category" placeholder="Category" required>
 
-            <tr>
-                <th>ID</th>
-                <th>Customer</th>
-                <th>Total</th>
-                <th>Status</th>
-            </tr>
+                <label for="product-price">Price</label>
+                <input type="number" id="product-price" placeholder="Price" required>
 
-            <tr>
-                <td>001</td>
-                <td>John</td>
-                <td>$120</td>
-                <td>Delivered</td>
-            </tr>
+                <label for="product-quantity">Quantity</label>
+                <input type="number" id="product-quantity" placeholder="Quantity" required>
 
-            <tr>
-                <td>002</td>
-                <td>David</td>
-                <td>$90</td>
-                <td>Pending</td>
-            </tr>
+                <button type="submit" class="btn-primary">Add Product</button>
+            </form>
 
-        </table>
+            <div class="table-box">
+                <h3>Product List</h3>
+                <table id="product-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 
-    </div>
+    <section class="section" id="orders-section">
+        <div class="section-header">
+            <h2>Orders</h2>
+            <p>Review order details and monitor fulfillment status.</p>
+        </div>
+
+        <div class="table-box">
+            <h3>Latest Orders</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-table-body">
+                    <tr>
+                        <td>001</td>
+                        <td>John Doe</td>
+                        <td>$120</td>
+                        <td class="status delivered">Delivered</td>
+                        <td>2026-06-10</td>
+                    </tr>
+                    <tr>
+                        <td>002</td>
+                        <td>David Lee</td>
+                        <td>$90</td>
+                        <td class="status pending">Pending</td>
+                        <td>2026-06-11</td>
+                    </tr>
+                    <tr>
+                        <td>003</td>
+                        <td>Maria Smith</td>
+                        <td>$145</td>
+                        <td class="status processing">Processing</td>
+                        <td>2026-06-12</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="section" id="customers-section">
+        <div class="section-header">
+            <h2>Customers</h2>
+            <p>See customer details and browse customer activity.</p>
+        </div>
+
+        <div class="customer-panel">
+            <div class="customer-list">
+                <h3>Customer Directory</h3>
+                <ul id="customer-list">
+                    <li data-email="john@example.com" data-phone="555-0123" data-orders="5">John Doe</li>
+                    <li data-email="david@example.com" data-phone="555-0456" data-orders="2">David Lee</li>
+                    <li data-email="maria@example.com" data-phone="555-0789" data-orders="3">Maria Smith</li>
+                </ul>
+            </div>
+            <div class="customer-details" id="customer-details">
+                <h3>Customer Details</h3>
+                <p>Select a customer to view details.</p>
+            </div>
+        </div>
+    </section>
 
 </div>
+
+<script>
+    const products = [
+        { name: 'Casual Sneakers', category: 'Shoes', price: 120, quantity: 12 },
+        { name: 'Sports Shoes', category: 'Shoes', price: 90, quantity: 8 },
+        { name: 'Formal Shoes', category: 'Shoes', price: 145, quantity: 6 }
+    ];
+
+    const productTableBody = document.querySelector('#product-table tbody');
+    const customerList = document.querySelector('#customer-list');
+    const customerDetails = document.querySelector('#customer-details');
+    const logoutBtn = document.querySelector('#logout-btn');
+
+    function renderProducts() {
+        productTableBody.innerHTML = '';
+        products.forEach((product, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${product.name}</td>
+                <td>${product.category}</td>
+                <td>$${product.price}</td>
+                <td>${product.quantity}</td>
+                <td><button class="btn-delete" data-index="${index}">Delete</button></td>
+            `;
+            productTableBody.appendChild(row);
+        });
+    }
+
+    function renderCustomerDetails(target) {
+        if (!target) return;
+        const name = target.textContent;
+        const email = target.dataset.email;
+        const phone = target.dataset.phone;
+        const orders = target.dataset.orders;
+        customerDetails.innerHTML = `
+            <h3>${name}</h3>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Phone:</strong> ${phone}</p>
+            <p><strong>Orders placed:</strong> ${orders}</p>
+            <p><strong>Last login:</strong> 2026-06-14</p>
+        `;
+    }
+
+    document.querySelector('#product-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const name = document.querySelector('#product-name').value.trim();
+        const category = document.querySelector('#product-category').value.trim();
+        const price = Number(document.querySelector('#product-price').value);
+        const quantity = Number(document.querySelector('#product-quantity').value);
+
+        if (!name || !category || !price || !quantity) return;
+
+        products.push({ name, category, price, quantity });
+        renderProducts();
+        this.reset();
+    });
+
+    productTableBody.addEventListener('click', function(event) {
+        if (!event.target.matches('.btn-delete')) return;
+        const index = Number(event.target.dataset.index);
+        products.splice(index, 1);
+        renderProducts();
+    });
+
+    customerList.addEventListener('click', function(event) {
+        const item = event.target.closest('li');
+        if (!item) return;
+        document.querySelectorAll('#customer-list li').forEach(li => li.classList.remove('active'));
+        item.classList.add('active');
+        renderCustomerDetails(item);
+    });
+
+    logoutBtn.addEventListener('click', function() {
+        window.location.href = 'walkura.html';
+    });
+
+    renderProducts();
+</script>
 
 </body>
 </html>
