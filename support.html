@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Walkura - Support</title>
+  <link rel="stylesheet" href="support.css">
+  <link rel="stylesheet" href="falling-stars.css">
+  <link rel="stylesheet" href="stars.css">
+  
+</head>
+<body>
+
+  <nav class="navbar" id="main-navbar">
+    <button class="nav-toggle" aria-label="Toggle navigation" onclick="document.getElementById('main-navbar').classList.toggle('open')">&#9776;</button>
+    <li>
+      <a href="walkura.html"><img src="walkuralogo.png" alt="Walkura Logo" class="logo"></a>
+    </li>
+    <ul>
+      <li><a href="walkura.html">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="account.html">Account</a></li>
+      <li><a href="cart.html">Cart (<span id="cartCount">0</span>)</a></li>
+      <li><a href="support.html" class="active">Support</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <h1>Customer Support</h1>
+    <p>Need help? Find answers or contact us directly.</p>
+  </section>
+
+  <section class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>How do I track my order?</h3>
+      <p>Log in to your account, go to “My Orders” and check the order status.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What is the return policy?</h3>
+      <p>Products can be returned within 14 days if unused and in original packaging.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What payment methods do you accept?</h3>
+      <p>We accept Visa, MasterCard, PayPal, and Cash on Delivery.</p>
+    </div>
+  </section>
+
+  <section class="contact">
+    <h2>Contact Us</h2>
+    
+    <form action="php/contact.php" method="POST">
+      
+      <label for="name">Name</label>
+      <input type="text" id="name" name="user_Name" placeholder="Your name" required>
+
+      <label for="phone">Phone</label>
+      <input type="text" id="phone" name="user_Phone" placeholder="Your phone" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="user_Email" placeholder="Your email" required>
+
+      <label for="subject">Subject</label>
+      <input type="text" id="subject" name="Subject" placeholder="Subject" required>
+
+      <label for="message">Message</label>
+      <textarea id="message" name="Message" rows="5" placeholder="Type your message..." required></textarea>
+
+      <button type="submit">Send Message</button>
+    </form>
+    </section>
+
+  <footer class="footer">
+    <script src="stars.js"></script>
+    <script>
+      function updateCartCount() {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let count = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const el = document.getElementById('cartCount');
+        if(el) el.textContent = count;
+      }
+      window.onload = updateCartCount;
+    </script>
+    <script>
+  // Check URL for "?status=success"
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('status') === 'success') {
+      alert("Message sent successfully! We will contact you soon.");
+      // Clean the URL
+      window.history.replaceState(null, null, window.location.pathname);
+  }
+</script>
+</body>
+</html>
+    <h2>Walkura Shoe Store</h2>
+    <p>Your one-stop online shoe store for sneakers, sports, formal shoes and slippers. Shop 24/7 with convenience.</p>
+    
+    <div class="social-icons">
+      <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+      <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Instagram"></a>
+      <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter"></a>
+      <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+    </div>
+
+    <p class="copyright">&copy; 2025 Walkura. All rights reserved.</p>
+  </footer>
+
+</body>
+<style>
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.footer {
+  text-align: center;
+  padding: 15px 0 10px;
+  background: #222;
+  color: #ccc;
+  font-size: 15px;
+  margin-top: auto;
+  width: 100%;
+  letter-spacing: 0.5px;
+}
+.contact {
+  width: 50%;
+  min-width: 280px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+</style>
+</html>

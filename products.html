@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Walkura - Products</title>
+  <link rel="stylesheet" href="products.css">
+  <link rel="stylesheet" href="falling-stars.css">
+  <link rel="stylesheet" href="stars.css">
+</head>
+<body>
+ 
+  <nav class="navbar" id="main-navbar">
+    <button class="nav-toggle" aria-label="Toggle navigation" onclick="document.getElementById('main-navbar').classList.toggle('open')">&#9776;</button>
+    <li>
+    <a href="walkura.html">
+      <img src="walkuralogo.png" alt="Walkura Logo" class="logo" >
+    </a>
+    </li>
+    <ul>
+      <li><a href="walkura.html">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="account.html">Account</a></li>
+      <li><a href="cart.html">Cart (<span id="cartCount">0</span>)</a></li>
+      <li><a href="support.html">Support</a></li>
+    </ul>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search shoes...">
+      <button onclick="searchProduct()">Go</button>
+    </div>
+  </nav>
+
+  <section class="products">
+    <h2>All Shoes</h2>
+    
+    <div class="product-grid" id="productGrid">
+        <p style="color:white; text-align:center; width:100%;">Loading products...</p>
+    </div>
+
+  </section>
+
+  <script>
+    async function loadProducts() {
+        try {
+            const response = await fetch('php/get_products.php');
+            const products = await response.json();
+            
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+
+            products.forEach(product => {
+                // Generate Size Options
+                // Database stores "7,8,9". We split it into an array.
+                const sizesArray = product.sizes.split(','); 
+                let optionsHtml = '<option value="">Select Size</option>';
+                sizesArray.forEach(size => {
+                    optionsHtml += `<option value="${size}">${size}</option>`;
+                });
+
+                // Create the HTML Card using your EXACT Classes
+                const card = `
+                <div class="product-card">
+                    <div class="product-img-wrap">
+                        <img src="${product.image}" alt="${product.name}">
+                        <span class="price-badge">Rs. ${product.price}</span>
+                    </div>
+                    <h3>${product.name}</h3>
+                    <p class="sizes">Sizes: ${product.sizes.replace(/,/g, ', ')}</p>
+                    
+                    <select class="size-select">
+                        ${optionsHtml}
+                    </select>
+                    
+                    <button class="add-cart-btn" onclick="addToCart(this, '${product.name}', ${product.price})">Add to Cart</button>
+                </div>
+                `;
+                
+                grid.innerHTML += card;
+            });
+
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('productGrid').innerHTML = '<p style="color:red; text-align:center;">Failed to load products.</p>';
+        }
+    }
+
+    window.addEventListener('load', loadProducts);
+
+    function searchProduct(){
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+      if(!q){ alert('Please enter a keyword to search.'); return; }
+      
+      let cards = document.querySelectorAll('.product-card');
+      let found = false; 
+      
+      cards.forEach(c => { 
+          const name = c.querySelector('h3').textContent.toLowerCase(); 
+          if(name.includes(q)){ 
+              c.style.display = ''; 
+              found = true;
+          } else { 
+              c.style.display = 'none'; 
+          }
+      }); 
+      
+      if(!found) alert('No shoes found for: ' + q);
+    }
+
+    function addToCart(btn, productName, price) {
+      var card = btn.closest('.product-card');
+      var sizeSelect = card.querySelector('.size-select');
+      var selectedSize = sizeSelect.value;
+      
+      if (!selectedSize) {
+        alert('Please select a size before adding to cart.');
+        return;
+      }
+      
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      let found = cart.find(item => item.name === productName && item.size === selectedSize);
+      
+      if (found) {
+        found.quantity += 1;
+      } else {
+        cart.push({ name: productName, price: price, size: selectedSize, quantity: 1, currency: 'LKR' });
+      }
+      
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCount();
+      alert(productName + " (Size: " + selectedSize + ") has been added to your cart! Price: Rs. " + price);
+    }
+
+    function updateCartCount() {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      let count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      const el = document.getElementById('cartCount');
+      if(el) el.textContent = count;
+    }
+    
+    document.addEventListener('DOMContentLoaded', updateCartCount);
+  </script>
+
+  <footer class="footer">
+    <h2>Walkura Shoe Store</h2>
+    <p>Your one-stop online shoe store for sneakers, sports, formal shoes and slippers. Shop 24/7 with convenience.</p>
+    
+    <div class="social-icons">
+      <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+      <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Instagram"></a>
+      <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter"></a>
+      <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+    </div>
+
+    <p class="copyright">&copy; 2025 Walkura. All rights reserved.</p>
+  </footer>
+
+  <style>
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  .footer {
+    background: #222;
+    color: #fff;
+    padding: 40px 20px 20px;
+    margin-top: auto;
+    width: 100%;
+  }
+  </style>
+  
+  <script src="stars.js"></script>
+</body>
+</html>

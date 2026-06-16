@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login to Walkura</title>
+  <link rel="stylesheet" href="register.css">
+  <link rel="stylesheet" href="stars.css">
+</head>
+<body>
+
+  <section class="register-container" style="max-width:420px; margin:140px auto 60px;">
+    <h2>Login to Walkura</h2>
+    <form id="loginForm" action="php/login.php" method="POST" novalidate>
+      
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required>
+      <div class="error-message" id="loginEmailError" style="display:none;"></div>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required minlength="5">
+      <div class="error-message" id="loginPasswordError" style="display:none;"></div>
+
+      <button type="submit">Login</button>
+      <p class="login-link">Don't have an account? <a href="register.html">Register here</a></p>
+    </form>
+  </section>
+
+  <footer>
+    <p>© 2025 Walkura. All rights Reserved</p>
+  </footer>
+
+  <script src="stars.js"></script>
+  <script>
+    const loginForm = document.getElementById("loginForm");
+    const loginEmail = document.getElementById("email");
+    const loginPassword = document.getElementById("password");
+    const loginEmailError = document.getElementById("loginEmailError");
+    const loginPasswordError = document.getElementById("loginPasswordError");
+
+    function validateLoginEmail(){
+      const value = loginEmail.value.trim();
+      const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if(!value){
+        loginEmailError.textContent = "Email is required"; loginEmailError.style.display='block'; loginEmail.classList.add('error'); return false;
+      }
+      if(!pattern.test(value)){
+        loginEmailError.textContent = "Enter a valid email"; loginEmailError.style.display='block'; loginEmail.classList.add('error'); return false;
+      }
+      loginEmailError.style.display='none'; loginEmail.classList.remove('error'); return true;
+    }
+    function validateLoginPassword(){
+      const value = loginPassword.value.trim();
+      if(!value){ loginPasswordError.textContent = "Password is required"; loginPasswordError.style.display='block'; loginPassword.classList.add('error'); return false; }
+      if(value.length < 5){ loginPasswordError.textContent = "Minimum 5 characters"; loginPasswordError.style.display='block'; loginPassword.classList.add('error'); return false; }
+      loginPasswordError.style.display='none'; loginPassword.classList.remove('error'); return true;
+    }
+
+    loginEmail.addEventListener('input', validateLoginEmail);
+    loginPassword.addEventListener('input', validateLoginPassword);
+
+    // UPDATED SUBMIT LOGIC
+    loginForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      const okEmail = validateLoginEmail();
+      const okPass = validateLoginPassword();
+      
+      if(okEmail && okPass) {
+        this.submit();
+      }
+    });
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const total = cart.reduce((a, i) => a + (i.quantity || 1), 0);
+      const el = document.getElementById('cart-count');
+      if (el) el.textContent = total;
+    }
+    document.addEventListener('DOMContentLoaded', updateCartCount);
+  </script>
+</body>
+</html>

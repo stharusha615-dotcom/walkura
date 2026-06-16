@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Walkura - Online Shoe Store</title>
+  <link rel="stylesheet" type="text/css" href="walkura.css"/>
+  <link rel="stylesheet" href="falling-stars.css"/>
+  <link rel="stylesheet" href="stars.css"/>
+  <script>
+     
+  </script>
+</head>
+<body>
+  
+  <nav class="navbar" id="main-navbar" style="background:rgba(0,0,0,0.25);backdrop-filter:blur(4px);">
+    <button class="nav-toggle" aria-label="Toggle navigation" onclick="document.getElementById('main-navbar').classList.toggle('open')">&#9776;</button>
+    <li>
+    <a href="walkura.html">
+      <img src="walkuralogo.png" alt="Walkura Logo" class="logo" >
+    </a>
+    </li>
+    <ul>
+  <li><a href="walkura.html">Home</a></li>
+  <li><a href="products.html">Products</a></li>
+  <li><a href="account.html">Account</a></li>
+  <li><a href="cart.html">Cart (<span id="cartCount">0</span>)</a></li>
+  <li><a href="support.html">Support</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <h1>Welcome to Walkura </h1>
+    <p>Your one-stop online shoe store. Shop 24/7 with convenience!</p>
+  </section>
+
+  <div class="category-container">
+  <section class="products">
+  <h2 style="color:#fff;">Featured Shoes</h2>
+    <div class="product-grid">
+      <div class="product-card">
+        <li>
+          <a href="products.html">
+            <img src="casualsneacker.jpg" alt="Casual Sneakers">
+          </a>
+        </li>
+        <h3>Casual Sneakers</h3>
+        <p>Mens & Womens</p>
+        <p>Available Sizes: 6, 7, 8, 9, 10</p>
+      </div>
+
+      <div class="product-card">
+         <li>
+          <a href="products.html">
+            <img src="ss3.jpg" alt="Sports Shoes">
+          </a>
+        </li>
+        <h3>Sports Shoes</h3>
+        <p>Mens & Womens</p>
+        <p>Available Sizes: 6, 7, 8, 9</p>
+      </div>
+
+      <div class="product-card">
+        <li>
+          <a href="products.html">
+            <img src="formalshoe.jpg" alt="Formal Shoes">
+          </a>
+        </li>
+        <h3>Formal Shoes</h3>
+        <p>Mens & Womens</p>
+        <p>Available Sizes: 8, 9, 10, 11</p>
+      </div>
+
+      <div class="product-card">
+        <li>
+          <a href="products.html">
+            <img src="s1.jpg" alt="slippers">
+          </a>
+        </li>
+        <h3>Slippers</h3>
+        <p>Mens & Womens</p>
+        <p>Available Sizes: 8, 9, 10, 11</p>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <script>
+    function addToCart(productName) {
+        
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let product = { name: productName, price: 5000, quantity: 1, currency: 'LKR' };
+        let found = cart.find(item => item.name === productName);
+        if (found) {
+          found.quantity += 1;
+        } else {
+          cart.push(product);
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+    alert(productName + " has been added to your cart! Price: Rs. " + product.price);
+    }
+
+    function updateCartCount() {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      let count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      document.getElementById('cartCount').textContent = count;
+    }
+
+    
+    window.onload = updateCartCount;
+  </script>
+
+  <footer class="footer">
+  
+  <script src="stars.js"></script>
+    <h2>Walkura Shoe Store</h2>
+    <p>Your one-stop online shoe store for sneakers, sports, formal shoes and slippers. Shop 24/7 with convenience.</p>
+    
+    <div class="social-icons">
+      <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+      <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Instagram"></a>
+      <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter"></a>
+      <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+    </div>
+
+    <p class="copyright">&copy; 2025 Walkura. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
