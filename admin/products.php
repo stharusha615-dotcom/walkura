@@ -1,39 +1,58 @@
 <?php
-require_once "admin_auth.php";
-require_once "../components/connect.php";
-
-$products = $conn->query("SELECT * FROM products");
+require_once("../php/db_conn.php");
+$result = mysqli_query($conn,"SELECT * FROM products");
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Manage Products</title>
+<title>Products</title>
 </head>
 <body>
 
-<?php include "admin_header.php"; ?>
+<h1>Products</h1>
 
-<h2>Products</h2>
-<a href="product_add.php">+ Add Product</a>
+<a href="add_product.php">Add Product</a>
 
-<table border="1">
+<table border="1" cellpadding="10">
+
 <tr>
-  <th>Name</th>
-  <th>Price</th>
-  <th>Action</th>
+<th>ID</th>
+<th>Image</th>
+<th>Name</th>
+<th>Price</th>
+<th>Sizes</th>
+<th>Category</th>
+<th>Action</th>
 </tr>
 
-<?php while($p = $products->fetch_assoc()): ?>
+<?php while($row=mysqli_fetch_assoc($result)){ ?>
+
 <tr>
-  <td><?= $p['name'] ?></td>
-  <td><?= $p['price'] ?></td>
-  <td>
-    <a href="product_edit.php?id=<?= $p['id'] ?>">Edit</a> |
-    <a href="product_delete.php?id=<?= $p['id'] ?>" onclick="return confirm('Delete?')">Delete</a>
-  </td>
+
+<td><?= $row['id'] ?></td>
+
+<td>
+<img src="../<?= $row['image'] ?>" width="80">
+</td>
+
+<td><?= $row['name'] ?></td>
+
+<td>Rs. <?= $row['price'] ?></td>
+
+<td><?= $row['sizes'] ?></td>
+
+<td><?= $row['category'] ?></td>
+
+<td>
+<a href="edit_product.php?id=<?= $row['id'] ?>">Edit</a>
+|
+<a href="delete_product.php?id=<?= $row['id'] ?>">Delete</a>
+</td>
+
 </tr>
-<?php endwhile; ?>
+
+<?php } ?>
 
 </table>
 

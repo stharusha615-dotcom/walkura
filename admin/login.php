@@ -1,26 +1,21 @@
 <?php
 session_start();
-require_once "../components/connect.php";
+require_once("../php/db_conn.php");
 
-$error = "";
+if(isset($_POST['login'])){
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT * FROM admin WHERE adminEmail=? AND adminPassword=?");
-    $stmt->bind_param("ss", $email, $password);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $sql = "SELECT * FROM admin WHERE adminEmail='$email' AND adminPassword='$password'";
+    $result = mysqli_query($conn,$sql);
 
-    if ($result->num_rows === 1) {
-        $admin = $result->fetch_assoc();
-        $_SESSION['admin_id'] = $admin['adminID'];
-        $_SESSION['admin_email'] = $admin['adminEmail'];
+    if(mysqli_num_rows($result)>0){
+        $_SESSION['admin'] = $email;
         header("Location: dashboard.php");
         exit();
-    } else {
-        $error = "Invalid admin credentials";
+    }else{
+        $error = "Invalid Login";
     }
 }
 ?>
@@ -28,20 +23,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Admin Login</title>
-  <link rel="stylesheet" href="../assets/style.css">
+<title>Admin Login</title>
+<style>
+body{
+background:#111827;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+font-family:Arial;
+}
+form{
+background:#1f2937;
+padding:30px;
+border-radius:10px;
+width:350px;
+}
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+}
+button{
+width:100%;
+padding:12px;
+background:#ff9800;
+border:none;
+color:white;
+}
+</style>
 </head>
 <body>
 
-<h2>Admin Login</h2>
-
 <form method="POST">
-  <input type="email" name="email" placeholder="Admin Email" required>
-  <input type="password" name="password" placeholder="Password" required>
-  <button type="submit">Login</button>
-</form>
 
-<p style="color:red"><?= $error ?></p>
+<h2 style="color:white">Walkura Admin</h2>
+
+<?php if(isset($error)) echo "<p style='color:red'>$error</p>"; ?>
+
+<input type="email" name="email" placeholder="Email" required>
+
+<input type="password" name="password" placeholder="Password" required>
+
+<button name="login">Login</button>
+
+</form>
 
 </body>
 </html>

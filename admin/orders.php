@@ -1,28 +1,74 @@
 <?php
-require_once "admin_auth.php";
-require_once "../components/connect.php";
+require_once("../php/db_conn.php");
 
-$orders = $conn->query("SELECT * FROM orders ORDER BY id DESC");
+if(isset($_POST['update'])){
+
+$id=$_POST['id'];
+$status=$_POST['status'];
+
+mysqli_query($conn,"
+UPDATE orders
+SET status='$status'
+WHERE id='$id'
+");
+}
+
+$orders=mysqli_query($conn,"
+SELECT *
+FROM orders
+ORDER BY id DESC
+");
 ?>
 
-<?php include "admin_header.php"; ?>
+<h1>Orders</h1>
 
-<h2>Orders</h2>
+<table border="1" cellpadding="10">
 
-<table border="1">
 <tr>
-  <th>Order ID</th>
-  <th>User</th>
-  <th>Total</th>
-  <th>Status</th>
+<th>ID</th>
+<th>User ID</th>
+<th>Total</th>
+<th>Status</th>
+<th>Date</th>
+<th>Update</th>
 </tr>
 
-<?php while($o = $orders->fetch_assoc()): ?>
+<?php while($row=mysqli_fetch_assoc($orders)){ ?>
+
 <tr>
-  <td><?= $o['id'] ?></td>
-  <td><?= $o['user_email'] ?></td>
-  <td><?= $o['total'] ?></td>
-  <td><?= $o['status'] ?></td>
+
+<td><?= $row['id'] ?></td>
+<td><?= $row['user_id'] ?></td>
+<td>Rs. <?= $row['total_amount'] ?></td>
+<td><?= $row['status'] ?></td>
+<td><?= $row['order_date'] ?></td>
+
+<td>
+
+<form method="POST">
+
+<input type="hidden"
+name="id"
+value="<?= $row['id'] ?>">
+
+<select name="status">
+
+<option>Pending</option>
+<option>Processing</option>
+<option>Delivered</option>
+
+</select>
+
+<button name="update">
+Save
+</button>
+
+</form>
+
+</td>
+
 </tr>
-<?php endwhile; ?>
+
+<?php } ?>
+
 </table>
