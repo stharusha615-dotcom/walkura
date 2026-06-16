@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.html");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +29,7 @@
     <ul>
   <li><a href="walkura.html">Home</a></li>
   <li><a href="products.html">Products</a></li>
-  <li><a href="account.html">Account</a></li>
+  <li><a href="account.php ">Account</a></li>
   <li><a href="cart.html">Cart (<span id="cartCount">0</span>)</a></li>
   <li><a href="support.html">Support</a></li>
     </ul>
@@ -30,20 +39,17 @@
     <h2>My Account</h2>
 
     <div class="account-box">
-      <img src="user.png" alt="User" class="user-img">
+        <img src="User.png" alt="User" class="user-img">
 
-      <h3>Sahan Tharusha</h3>
-      <p>Email: sahan@gmail.com</p>
+        <h3><?php echo $_SESSION['fullname']; ?></h3>
+        <p>Email: <?php echo $_SESSION['email']; ?></p>
 
-      <button class="btn">Edit Profile</button>
-      <button class="btn logout">Logout</button>
+        <button class="btn">Edit Profile</button>
+        <a href="php/logout.php">
+            <button class="btn logout">Logout</button>
+        </a>
     </div>
-
-    <div class="order-history">
-      <h3>Order History</h3>
-      <p>No recent orders found.</p>
-    </div>
-  </div>
+</div>
 
      <footer class="footer">
 <script>
@@ -71,3 +77,4 @@
 
 </body>
 </html>
+
