@@ -102,7 +102,9 @@ table th{
 <body>
 
 <div class="sidebar">
-    <h2>Walkura Admin</h2>
+    <h2>
+        <a href="login.php" style="color: #ff9800; text-decoration: none;">Walkura Admin</a>
+    </h2>
 
     <a href="dashboard.php">Dashboard</a>
     <a href="products.php">Products</a>

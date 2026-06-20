@@ -1,9 +1,7 @@
 <?php
 session_start();
 
-// ✅ Fix path — adjust based on your folder structure
-include 'db_conn.php'; // if db_conn.php is inside php/ folder
-// include '../db_conn.php'; // if db_conn.php is in root walkura/ folder
+include 'db_conn.php'; 
 
 header('Content-Type: application/json');
 

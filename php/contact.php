@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit(); 
             
         } else {
-            //error: Something went wrong
+            //error
             header("Location: ../support.html?status=error");
             exit();
         }
@@ -39,7 +39,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $conn->close();
 } else {
-    //if someone tries to open this file directly
     header("Location: ../support.html");
     exit();
 }
